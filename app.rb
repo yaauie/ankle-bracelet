@@ -15,6 +15,7 @@ class AnkleBracelet < Sinatra::Base
 
   get '/status' do
     MUTEX.synchronize do
+      headers 'Content-Type' => 'application/json; charset=UTF-8'
       if LAST_CHECKIN
         seconds_since = (Time.now - LAST_CHECKIN).to_i
 
