@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+require 'curb'
+require 'time'
+require 'colorize'
+
+if ARGV.length != 1
+  puts "USAGE: #{$0} app.address.com"
+  exit 1
+end
+
+def timestamp
+  Time.now.iso8601
+end
+
+host = ARGV.first
+
+loop do
+  begin
+    Curl::Easy::http_put("http://#{host}/checkin", 'YAAUIE')
+    puts "#{timestamp} SUCESSFUL CHECKIN.".colorize(:green)
+  rescue
+    error_message = "ERROR CHECKING IN. #{$!}"
+    puts "#{timestamp} #{error_message}".colorize(:red)
+    `which say && say '#{error_message.gsub('::',' ')}'`
+  end
+  sleep 30
+end
